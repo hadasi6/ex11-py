@@ -5,6 +5,8 @@ from boggle_board_randomizer import randomize_board
 CANVAS_HEIGHT = 600
 CANVAS_WIDTH = 600
 BAR_HEIGHT = 50
+BOARD_SIZE = 400
+GAME_TIME = (0, 3) # seconds, mins, hrs
 
 
 class MyApp:
@@ -33,14 +35,21 @@ class MyApp:
         # Create timer
 
         # Create tile grid
-        # self._tile_grid = MyApp.TileGrid(root)
+
+        # Create timer
+        timer_text = self.display_countdown(GAME_TIME)
+        timer = tki.Label(self._top_frame, text=timer_text)
+        timer.pack()
+        self._timer = timer
 
 
-
+    def display_countdown(self, time):
+        return "00:00"
 
 
     def _initialize_board(self):
         self._board = randomize_board()
+        self._tile_grid = MyApp.TileGrid(self._center_frame, self._board)
         # TODO: Validate board?
 
     def run(self):
@@ -48,14 +57,15 @@ class MyApp:
         self._root.mainloop()
 
     class TileGrid:
-        def __init__(self, master):
+        def __init__(self, master, board):
             self._master = master
-            main_frame = tki.Frame(master=self._master)
+            main_frame = tki.Frame(master=self._master, bg='lightgreen', width=BOARD_SIZE, height=BOARD_SIZE)
             main_frame.pack()
             self._main_frame = main_frame
             for i in range(4):
                 for j in range(4):
-                    label = tki.Label()
+                    label = tki.Label(self._main_frame, text=board[i][j])
+                    label.grid(row=i, column=j)
 
 
 
