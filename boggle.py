@@ -33,10 +33,6 @@ class MyApp:
         center_frame.pack(fill=tki.BOTH, expand=True)
         self._center_frame = center_frame
         # Create timer
-
-        # Create tile grid
-
-        # Create timer
         timer_text = self.display_countdown(GAME_TIME)
         timer = tki.Label(self._top_frame, text=timer_text)
         timer.pack()
@@ -59,13 +55,15 @@ class MyApp:
     class TileGrid:
         def __init__(self, master, board):
             self._master = master
-            main_frame = tki.Frame(master=self._master, bg='lightgreen', width=BOARD_SIZE, height=BOARD_SIZE)
-            main_frame.pack()
-            self._main_frame = main_frame
+            main_frame = tki.Frame(master=self._master, bg='lightgreen')
             for i in range(4):
+                main_frame.rowconfigure(i, weight=1)
                 for j in range(4):
-                    label = tki.Label(self._main_frame, text=board[i][j])
+                    main_frame.columnconfigure(j, weight=1)
+                    label = tki.Button(main_frame, text=board[i][j])
                     label.grid(row=i, column=j)
+            main_frame.place(width=BOARD_SIZE, height=BOARD_SIZE, relx=0.5, anchor="n")
+            self._main_frame = main_frame
 
 
 
