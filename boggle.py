@@ -52,6 +52,7 @@ class MyApp:
     def run(self):
         self._initialize_board()
         self.display_countdown()
+        self.bind_keys()
         self._root.mainloop()
 
     def display_countdown(self):
@@ -77,9 +78,20 @@ class MyApp:
 
         return str_min + ':' + str_sec
 
+    def bind_keys(self):
+        for coord, button in self._tile_grid.get_buttons().items():
+            i, j = coord
+
+            def _on_click(event):
+                event.widget.config(relief=tki.SUNKEN)
+                return "break"
+            button.bind("<Button-1>", _on_click)
+
     class TileGrid:
         def __init__(self, master, board):
             self._master = master
+            self._board = board
+            self._buttons = {}
             main_frame = tki.Frame(master=self._master, bg='lightgreen')
             main_frame.place(width=BOARD_SIZE, height=BOARD_SIZE, x=10, y=5)
             self._main_frame = main_frame
@@ -87,15 +99,13 @@ class MyApp:
                 main_frame.rowconfigure(i, weight=1)
                 for j in range(4):
                     main_frame.columnconfigure(j, weight=1)
-                    button = self.create_tile(i, j, board[i][j])
+                    # button = self.create_tile(i, j, board[i][j])
+                    button = tki.Button(self._main_frame, text=board[i][j])
                     button.grid(row=i, column=j, sticky=tki.NSEW)
+                    self._buttons[(i, j)] = button
 
-        def create_tile(self, i, j, text):
-            def _on_click():
-
-            button = tki.Button(self._main_frame, text=text)
-            button.bind("<Button-1>", _on_click)
-            return button
+        def get_buttons(self):
+            return self._buttons
 
 
 def main():
