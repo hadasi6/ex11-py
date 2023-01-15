@@ -6,7 +6,7 @@ CANVAS_HEIGHT = 600
 CANVAS_WIDTH = 600
 BAR_HEIGHT = 50
 BOARD_SIZE = 400
-GAME_TIME = (0, 3) # seconds, mins, hrs
+GAME_TIME = (0, 3)  # seconds, mins, hrs
 
 
 class MyApp:
@@ -15,9 +15,9 @@ class MyApp:
 
         # Create root
         root = tki.Tk()
-        root.geometry(f"{CANVAS_WIDTH}x{CANVAS_WIDTH}") # Set window size
-        root.resizable(False, False) # Disable window resize
-        root.title("Boggle") # Set window title
+        root.geometry(f"{CANVAS_WIDTH}x{CANVAS_WIDTH}")  # Set window size
+        root.resizable(False, False)  # Disable window resize
+        root.title("Boggle")  # Set window title
         self._root = root
 
         # Create top bar
@@ -38,10 +38,8 @@ class MyApp:
         timer.pack()
         self._timer = timer
 
-
     def display_countdown(self, time):
         return "00:00"
-
 
     def _initialize_board(self):
         self._board = randomize_board()
@@ -64,9 +62,6 @@ class MyApp:
                     button.grid(row=i, column=j, sticky=tki.NSEW)
             main_frame.place(width=BOARD_SIZE, height=BOARD_SIZE, x=10, y=5)
             self._main_frame = main_frame
-
-
-
 
 
 def main():
