@@ -60,9 +60,9 @@ class MyApp:
                 main_frame.rowconfigure(i, weight=1)
                 for j in range(4):
                     main_frame.columnconfigure(j, weight=1)
-                    label = tki.Button(main_frame, text=board[i][j])
-                    label.grid(row=i, column=j)
-            main_frame.place(width=BOARD_SIZE, height=BOARD_SIZE, relx=0.5, anchor="n")
+                    button = tki.Button(main_frame, text=board[i][j])
+                    button.grid(row=i, column=j, sticky=tki.NSEW)
+            main_frame.place(width=BOARD_SIZE, height=BOARD_SIZE, x=10, y=5)
             self._main_frame = main_frame
 
 
