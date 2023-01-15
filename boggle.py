@@ -5,6 +5,7 @@ from boggle_board_randomizer import randomize_board
 CANVAS_HEIGHT = 600
 CANVAS_WIDTH = 600
 BAR_HEIGHT = 50
+GAME_TIME = "03:00"
 
 
 class MyApp:
@@ -31,7 +32,12 @@ class MyApp:
         center_frame.pack(fill=tki.BOTH, expand=True)
         self._center_frame = center_frame
         # Create timer
-
+        lable_text_change = tki.StringVar()
+        timer_label = tki.Label(self._top_frame, textvariable=lable_text_change)
+        lable_text_change.set(GAME_TIME)
+        timer_label.pack()
+        self._timer_label = timer_label
+        self._timer_text = lable_text_change
         # Create tile grid
         # self._tile_grid = MyApp.TileGrid(root)
 
@@ -45,6 +51,7 @@ class MyApp:
 
     def run(self):
         self._initialize_board()
+        self.display_countdown()
         self._root.mainloop()
 
     class TileGrid:
@@ -56,6 +63,29 @@ class MyApp:
             for i in range(4):
                 for j in range(4):
                     label = tki.Label()
+
+    def display_countdown(self):
+        txt = self.countdown()
+        if txt is not None:
+            self._timer_text.set(txt)
+            self._root.after(1000, self.display_countdown)
+
+
+    def countdown(self):
+        time_str = self._timer_text.get()
+        minute, second = int(time_str[0:2]), int(time_str[3:])
+        if second == 0:
+            if minute == 0:
+                return
+            minute -= 1
+            second = 59
+        else:
+            second -= 1
+
+        str_sec = '0' + str(second) if len(str(second)) == 1 else str(second)
+        str_min = '0' + str(minute) if len(str(minute)) == 1 else str(minute)
+
+        return str_min + ':' + str_sec
 
 
 
