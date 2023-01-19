@@ -124,10 +124,6 @@ class MyApp:
         def get_buttons(self):
             return self._buttons
 
-        def get_gdf(self):
-
-            return 'start'
-
 
 def main():
     controller = BoggleController()
