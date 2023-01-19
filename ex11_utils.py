@@ -20,7 +20,7 @@ def _is_board_coordinate(board: Board, coord: Tuple[int, int]) -> bool:
     return True
 
 
-def _is_adjacent(coord1: Tuple[int, int], coord2: Tuple[int, int]) -> bool:
+def is_adjacent(coord1: Tuple[int, int], coord2: Tuple[int, int]) -> bool:
     if coord1 == coord2:
         return False  # TODO validate
     x1, y1 = coord1
@@ -52,7 +52,7 @@ def is_valid_path(board: Board, path: Path,
     for coord in path[1:]:
         if not _is_board_coordinate(board, coord):
             return None
-        if not _is_adjacent(last_coord, coord):
+        if not is_adjacent(last_coord, coord):
             return None
         y, x = coord
         word += board[y][x]
