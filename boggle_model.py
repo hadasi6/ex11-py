@@ -26,7 +26,7 @@ class BoggleModel:
             self._reset_word()
 
             if self.is_valid_word(self._path):
-                self.lst_used_words.add(self._temp_word)
+                self.lst_used_words.add(self._temp_word)   # adding words to frame
 
                 # TODO: handle finished word
             self._path = []

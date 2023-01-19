@@ -6,8 +6,9 @@ from timer import Timer
 
 CANVAS_HEIGHT = 600
 CANVAS_WIDTH = 600
-BAR_HEIGHT = 50
 BOARD_SIZE = 400
+TOP_BAR_HEIGHT = 60
+BOTTOM_BAR_HEIGHT = 60
 
 
 class BoggleGui:
@@ -88,8 +89,8 @@ class GameScreenGui:
         self._create_bottom_bar()
         self._create_center_frame()
         self._create_timer()
-        self._create_grid()
-        self._create_message_label()
+        # self._create_grid()
+        # self._create_message_label()
 
     def handle_time_out(self):
         pass
@@ -105,33 +106,50 @@ class GameScreenGui:
                 frame.destroy()
 
     def _create_bottom_bar(self):
-        bottom_frame = tki.Frame(self._master, bg="lightgray", height=BAR_HEIGHT)
+        bottom_frame = tki.Frame(self._master, bg="lightgray", height=TOP_BAR_HEIGHT)
         bottom_frame.pack(fill=tki.X, side=tki.BOTTOM)
         self._bottom_frame = bottom_frame
 
     def _create_center_frame(self):
         center_frame = tki.Frame(self._master, bg="lightpink")
+        center_frame.columnconfigure(0, weight=2)
+        center_frame.columnconfigure(1, weight=1)
         center_frame.pack(fill=tki.BOTH, expand=True)
         self._center_frame = center_frame
+        left_frame = tki.Frame(center_frame, bg="blue")
+        left_frame.grid(row=0, column=0)
+        right_frame = tki.Frame(center_frame, bg="brown")
+        left_frame.grid(row=0, column=1)
+        self._left_frame = left_frame
+        self.right_frame = right_frame
 
-    def _create_top_bar(self):
-        top_frame = tki.Frame(self._master, bg="lightgray", height=BAR_HEIGHT)
-        top_frame.pack(fill=tki.X)
-        self._top_frame = top_frame
-
-    def _create_grid(self):
-        self._grid = TileGrid(self._center_frame, self._board, 400, self._handle_add_coordinate, self.set_message,
+        self._grid = TileGrid(right_frame, self._board, BOARD_SIZE, self._handle_add_coordinate,
+                              self.set_message,
                               self.set_message)
         self._grid.create()
+
+    def _create_top_bar(self):
+        top_frame = tki.Frame(self._master, bg="lightgray", height=BOTTOM_BAR_HEIGHT)
+        top_frame.pack(fill=tki.X)
+        top_frame.pack_propagate(0)
+        self._top_frame = top_frame
+
+    # def _create_grid(self):
+    #     self._grid = TileGrid(self._center_frame, self._board, BOARD_SIZE, self._handle_add_coordinate, self.set_message,
+    #                           self.set_message)
+    #     self._grid.create()
 
     def set_message(self, message):
         self._message_text.set(message)
 
     def _create_message_label(self):
-        frame = tki.Frame(self._center_frame, bg="red")
+        frame = tki.Frame(self._top_frame)
         frame.pack(fill=tki.X, anchor=tki.S)
         label = tki.Label(frame, textvariable=self._message_text)
         label.pack()
+
+    def _create_message_lable(self):
+        fra
 
     def reset_tiles(self):
         self._grid.reset_word()

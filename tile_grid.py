@@ -15,7 +15,7 @@ class TileGrid:
 
     def create(self):
         main_frame = tki.Frame(master=self._master, bg='lightgreen')
-        main_frame.place(width=self._board_size, height=self._board_size, x=10, y=5)
+        main_frame.pack(fill=tki.BOTH, expand=True)
         self._main_frame = main_frame
         for i in range(4):
             main_frame.rowconfigure(i, weight=1)
