@@ -28,6 +28,6 @@ class TileGrid:
         # Call the click handler with the board coordinates pressed
         def on_tile_press(event):
             event.widget.config(relief=tki.SUNKEN)
-            self._click_handler(coordinate, event)
+            self._click_handler(coordinate)
             return "break"
         return on_tile_press

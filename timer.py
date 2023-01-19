@@ -22,7 +22,7 @@ class Timer:
         txt = self.countdown()
         if txt is not None:
             self._timer_text.set(txt)
-            self._root.after(1000, self.display_countdown)
+            self._master.after(1000, self.display_countdown)
 
     def countdown(self):
         time_str = self._timer_text.get()

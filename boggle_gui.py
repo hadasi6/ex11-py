@@ -11,11 +11,12 @@ BOARD_SIZE = 400
 
 
 class BoggleGui:
-    def __init__(self, handle_start_screen_press):
+    def __init__(self, handle_start_screen_press, handle_add_coordinate):
         self._create_root()
         self._start_screen = StartScreenGui(self._root, handle_start_screen_press)
-        self._game_screen = GameScreenGui(self._root)
+        self._game_screen = GameScreenGui(self._root, handle_add_coordinate)
         self._handle_start_screen_press = handle_start_screen_press
+        self._handle_add_coordinate = handle_add_coordinate
 
     def _create_root(self):
         root = tki.Tk()
@@ -64,7 +65,7 @@ class StartScreenGui:
 
 
 class GameScreenGui:
-    def __init__(self, master):
+    def __init__(self, master, handle_add_coordinate):
         self._timer = None
         self._master = master
         self._top_frame = None
@@ -72,6 +73,7 @@ class GameScreenGui:
         self._bottom_frame = None
         self._grid = None
         self._board = randomize_board()
+        self._handle_add_coordinate = handle_add_coordinate
 
     def create(self):
         self._create_top_bar()
@@ -108,11 +110,8 @@ class GameScreenGui:
         top_frame.pack(fill=tki.X)
         self._top_frame = top_frame
 
-    def _handle_click(self, coordinate, event):
-        pass
-
     def _create_grid(self):
-        self._grid = TileGrid(self._center_frame, self._board, 400, self._handle_click)
+        self._grid = TileGrid(self._center_frame, self._board, 400, self._handle_add_coordinate)
         self._grid.create()
 
 
