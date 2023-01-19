@@ -85,10 +85,26 @@ class GameScreenGui:
         self._message_text = tki.StringVar()
 
     def create(self):
-        self._create_top_bar()
-        self._create_bottom_bar()
-        self._create_center_frame()
-        self._create_timer()
+        container = tki.Frame(self._master, bg="lightblue")
+        container.rowconfigure(0, weight=1)
+        container.rowconfigure(1, weight=4)
+        container.rowconfigure(2, weight=1)
+        container.columnconfigure(0, weight=2)
+        container.columnconfigure(1, weight=1)
+        container.pack(fill=tki.BOTH, expand=True)
+        top = tki.Frame(container, bg="blue")
+        top.grid(row=0, column=0, sticky=tki.NSEW, columnspan=2)
+        bottom = tki.Frame(container, bg="green")
+        bottom.grid(row=2, column=0, sticky=tki.NSEW, columnspan=2)
+        left = tki.Frame(container, bg="red")
+        left.grid(row=1, column=0, sticky=tki.NSEW)
+        right = tki.Frame(container, bg="gray")
+        right.grid(row=1, column=1, sticky=tki.NSEW)
+
+        # self._create_top_bar()
+        # self._create_bottom_bar()
+        # self._create_center_frame()
+        # self._create_timer()
         # self._create_grid()
         # self._create_message_label()
 
@@ -123,10 +139,10 @@ class GameScreenGui:
         self._left_frame = left_frame
         self.right_frame = right_frame
 
-        self._grid = TileGrid(right_frame, self._board, BOARD_SIZE, self._handle_add_coordinate,
-                              self.set_message,
-                              self.set_message)
-        self._grid.create()
+        # self._grid = TileGrid(right_frame, self._board, BOARD_SIZE, self._handle_add_coordinate,
+        #                       self.set_message,
+        #                       self.set_message)
+        # self._grid.create()
 
     def _create_top_bar(self):
         top_frame = tki.Frame(self._master, bg="lightgray", height=BOTTOM_BAR_HEIGHT)
