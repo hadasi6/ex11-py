@@ -1,6 +1,7 @@
 import tkinter as tki
 import time
 from boggle_board_randomizer import randomize_board
+from boggle_controller import BoggleController
 
 CANVAS_HEIGHT = 600
 CANVAS_WIDTH = 600
@@ -15,33 +16,50 @@ class MyApp:
         self.current_path = []
 
         # Create root
-        root = tki.Tk()
-        root.geometry(f"{CANVAS_WIDTH}x{CANVAS_WIDTH}")  # Set window size
-        root.resizable(False, False)  # Disable window resize
-        root.title("Boggle")  # Set window title
-        self._root = root
+        self._create_root()
 
         # Create top bar
-        top_frame = tki.Frame(self._root, bg="lightgray", height=BAR_HEIGHT)
-        top_frame.pack(fill=tki.X)
-        self._top_frame = top_frame
+        self._create_top_bar()
         # Create bottom bar
+        self._create_bottom_bar()
+        # Center frame
+        self._center_frame()
+        # Create timer
+        self._create_timer()
+        # Create tile grid
+        # self._tile_grid = MyApp.TileGrid(root)
+
+    def _create_bottom_bar(self):
         bottom_frame = tki.Frame(self._root, bg="lightgray", height=BAR_HEIGHT)
         bottom_frame.pack(fill=tki.X, side=tki.BOTTOM)
         self._bottom_frame = bottom_frame
-        # Center frame
+
+    def _center_frame(self):
         center_frame = tki.Frame(self._root, bg="lightpink")
         center_frame.pack(fill=tki.BOTH, expand=True)
         self._center_frame = center_frame
-        # Create timer
+
+    def _create_timer(self):
         lable_text_change = tki.StringVar()
         timer_label = tki.Label(self._top_frame, textvariable=lable_text_change)
         lable_text_change.set(GAME_TIME)
         timer_label.pack()
         self._timer_label = timer_label
         self._timer_text = lable_text_change
-        # Create tile grid
-        # self._tile_grid = MyApp.TileGrid(root)
+
+    def _create_root(self):
+        root = tki.Tk()
+        root.geometry(f"{CANVAS_WIDTH}x{CANVAS_WIDTH}")  # Set window size
+        root.resizable(False, False)  # Disable window resize
+        root.title("Boggle")  # Set window title
+        self._root = root
+
+    def _create_top_bar(self):
+        top_frame = tki.Frame(self._root, bg="lightgray", height=BAR_HEIGHT)
+        top_frame.pack(fill=tki.X)
+        self._top_frame = top_frame
+
+
 
 
     def _initialize_board(self):
@@ -75,7 +93,6 @@ class MyApp:
 
         str_sec = '0' + str(second) if len(str(second)) == 1 else str(second)
         str_min = '0' + str(minute) if len(str(minute)) == 1 else str(minute)
-
         return str_min + ':' + str_sec
 
     def bind_keys(self):
@@ -107,10 +124,14 @@ class MyApp:
         def get_buttons(self):
             return self._buttons
 
+        def get_gdf(self):
+
+            return 'start'
+
 
 def main():
-    app = MyApp()
-    app.run()
+    controller = BoggleController()
+    controller.run()
 
 
 if __name__ == "__main__":
