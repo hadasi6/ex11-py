@@ -11,12 +11,13 @@ BOARD_SIZE = 400
 
 
 class BoggleGui:
-    def __init__(self, handle_start_screen_press, handle_add_coordinate):
+    def __init__(self, board, handle_start_screen_press, handle_add_coordinate):
         self._create_root()
         self._start_screen = StartScreenGui(self._root, handle_start_screen_press)
-        self._game_screen = GameScreenGui(self._root, handle_add_coordinate)
         self._handle_start_screen_press = handle_start_screen_press
         self._handle_add_coordinate = handle_add_coordinate
+        self._board = board
+        self.game_screen = GameScreenGui(board, self._root, handle_add_coordinate)
 
     def _create_root(self):
         root = tki.Tk()
@@ -28,6 +29,9 @@ class BoggleGui:
     def run(self):
         self._root.mainloop()
 
+    def set_message(self, message):
+        self.game_screen.set_message(message)
+
     def display_start_screen(self):
         self._start_screen.create()
 
@@ -35,13 +39,16 @@ class BoggleGui:
         self._start_screen.destroy()
 
     def display_game_screen(self):
-        self._game_screen.create()
+        self.game_screen.create()
 
     def hide_game_screen(self):
-        self._game_screen.destroy()
+        self.game_screen.destroy()
 
     def display_end_screen(self, handle_end_screen_press):
         pass
+
+    # def reset_tiles(self):
+    #     self.game_screen.reset_tiles()
 
 
 class StartScreenGui:
@@ -65,15 +72,16 @@ class StartScreenGui:
 
 
 class GameScreenGui:
-    def __init__(self, master, handle_add_coordinate):
+    def __init__(self, board, master, handle_add_coordinate):
         self._timer = None
         self._master = master
         self._top_frame = None
         self._center_frame = None
         self._bottom_frame = None
         self._grid = None
-        self._board = randomize_board()
+        self._board = board
         self._handle_add_coordinate = handle_add_coordinate
+        self._message_text = tki.StringVar()
 
     def create(self):
         self._create_top_bar()
@@ -81,6 +89,7 @@ class GameScreenGui:
         self._create_center_frame()
         self._create_timer()
         self._create_grid()
+        self._create_message_label()
 
     def handle_time_out(self):
         pass
@@ -111,8 +120,21 @@ class GameScreenGui:
         self._top_frame = top_frame
 
     def _create_grid(self):
-        self._grid = TileGrid(self._center_frame, self._board, 400, self._handle_add_coordinate)
+        self._grid = TileGrid(self._center_frame, self._board, 400, self._handle_add_coordinate, self.set_message,
+                              self.set_message)
         self._grid.create()
+
+    def set_message(self, message):
+        self._message_text.set(message)
+
+    def _create_message_label(self):
+        frame = tki.Frame(self._center_frame, bg="red")
+        frame.pack(fill=tki.X, anchor=tki.S)
+        label = tki.Label(frame, textvariable=self._message_text)
+        label.pack()
+
+    def reset_tiles(self):
+        self._grid.reset_word()
 
 
 class EndScreenGui:
