@@ -10,9 +10,11 @@ class BoggleController:
         self._board = randomize_board()
         self._words = BoggleController.load_words_file()
         self._model = BoggleModel(board=self._board, lst_words=self._words, reset_word=self.reset_tiles,
-                                  message_setter=self.message_setter)
+                                  message_setter=self.message_setter,
+                                  score_and_words_setter=None)
         self._gui = BoggleGui(board=self._board, handle_start_screen_press=self.on_start_screen_press,
                               handle_add_coordinate=self._model.add_coordinate)
+        self._model._score_and_words_setter = self._gui.game_screen.set_score_and_word
 
     def run(self):
         self._gui.display_start_screen()

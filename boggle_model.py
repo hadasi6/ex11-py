@@ -1,32 +1,38 @@
-from ex11_utils import is_valid_path, is_adjacent
+from ex11_utils import is_adjacent
 
 
 class BoggleModel:
-    def __init__(self, board, lst_words, reset_word, message_setter):
+    def __init__(self, board, lst_words, reset_word, message_setter, score_and_words_setter):
         self._path = []
         self._temp_word = ""
         self._board = board
         self.lst_words = lst_words
-        self.lst_used_words = set()
+        self.used_words = set()
         self.score = 0
         self._message_setter = message_setter
         self._reset_word = reset_word
+        self._score_and_words_setter = score_and_words_setter
 
     def add_coordinate(self, coordinate):
-        if self.is_valid_coordinate(coordinate):
-            pass
         # Not finished writing word
         if coordinate not in self._path:
-            self._path.append(coordinate)
-            self._temp_word += self._board[coordinate[0]][coordinate[1]]
-            self._message_setter(self._temp_word)
+            if not self.is_valid_coordinate(coordinate):
+                self._message_setter("Not adjacent!")
+                self._path = []
+                self._temp_word = ""
+                self._reset_word()
+            else:
+                self._path.append(coordinate)
+                self._temp_word += self._board[coordinate[0]][coordinate[1]]
+                self._message_setter(self._temp_word)
         # Finished writting word
         else:
             self._message_setter("")
             self._reset_word()
 
             if self.is_valid_word(self._path):
-                self.lst_used_words.add(self._temp_word)   # adding words to frame
+                self.used_words.add(self._temp_word)   # adding words to frame
+                self._score_and_words_setter(self.score, self.used_words)
 
                 # TODO: handle finished word
             self._path = []
@@ -45,7 +51,7 @@ class BoggleModel:
         return True
 
     def is_real_word(self, word) -> bool:
-        if word in self.lst_used_words:
+        if word in self.used_words:
             self._message_setter('ALREADY SELECTED!!!')
             return False
         if word not in self.lst_words:
@@ -58,7 +64,7 @@ class BoggleModel:
             return True
         last_coordinate = self._path[-1]
         if not is_adjacent(last_coordinate, coordinate):
-            self._message_setter("Not adjacent!")
+            # self._message_setter("Not adjacent!")
             return False
         return True
 
