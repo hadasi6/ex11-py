@@ -74,45 +74,50 @@ class StartScreenGui:
 
 class GameScreenGui:
     def __init__(self, board, master, handle_add_coordinate):
+        self._tiles_frame = None
+        self._timer_frame = None
         self._timer = None
         self._master = master
-        self._top_frame = None
-        self._center_frame = None
-        self._bottom_frame = None
         self._grid = None
         self._board = board
         self._handle_add_coordinate = handle_add_coordinate
         self._message_text = tki.StringVar()
 
     def create(self):
-        container = tki.Frame(self._master, bg="lightblue")
+        container = tki.Frame(self._master, bg="lightblue", borderwidth=10)
         container.rowconfigure(0, weight=1)
-        container.rowconfigure(1, weight=4)
-        container.rowconfigure(2, weight=1)
+        container.rowconfigure(1, weight=1)
+        container.rowconfigure(2, weight=8)
+        container.rowconfigure(3, weight=1)
         container.columnconfigure(0, weight=2)
         container.columnconfigure(1, weight=1)
         container.pack(fill=tki.BOTH, expand=True)
-        top = tki.Frame(container, bg="blue")
-        top.grid(row=0, column=0, sticky=tki.NSEW, columnspan=2)
-        bottom = tki.Frame(container, bg="green")
-        bottom.grid(row=2, column=0, sticky=tki.NSEW, columnspan=2)
-        left = tki.Frame(container, bg="red")
-        left.grid(row=1, column=0, sticky=tki.NSEW)
-        right = tki.Frame(container, bg="gray")
-        right.grid(row=1, column=1, sticky=tki.NSEW)
 
-        # self._create_top_bar()
-        # self._create_bottom_bar()
-        # self._create_center_frame()
-        # self._create_timer()
-        # self._create_grid()
+        message_frame = tki.Frame(container, bg="pink")
+        message_frame.grid(row=0, column=0, columnspan=2, sticky=tki.NSEW)
+        timer_frame = tki.Frame(container)
+        timer_frame.grid(row=1, column=0, sticky=tki.NSEW)
+        score_frame = tki.Frame(container, bg="cyan")
+        score_frame.grid(row=1, column=1, sticky=tki.NSEW)
+        tiles_frame = tki.Frame(container)
+        tiles_frame.grid(row=2, column=0, sticky=tki.NSEW)
+        words_frame = tki.Frame(container, bg="turquoise")
+        words_frame.grid(row=2, column=1, sticky=tki.NSEW)
+        message_frame = tki.Frame(container, bg="pink")
+        message_frame.grid(row=3, column=0, columnspan=2, sticky=tki.NSEW)
+
+        self._timer_frame = timer_frame
+        self._tiles_frame = tiles_frame
+
+        self._create_timer()
+        self._create_grid()
         # self._create_message_label()
 
     def handle_time_out(self):
         pass
 
     def _create_timer(self):
-        self._timer = Timer(self._top_frame, "03:00", self.handle_time_out)
+        self._timer = Timer(self._timer_frame, "03:00", self.handle_time_out)
         self._timer.create()
 
     def destroy(self):
@@ -150,10 +155,10 @@ class GameScreenGui:
         top_frame.pack_propagate(0)
         self._top_frame = top_frame
 
-    # def _create_grid(self):
-    #     self._grid = TileGrid(self._center_frame, self._board, BOARD_SIZE, self._handle_add_coordinate, self.set_message,
-    #                           self.set_message)
-    #     self._grid.create()
+    def _create_grid(self):
+        self._grid = TileGrid(self._tiles_frame, self._board, BOARD_SIZE, self._handle_add_coordinate, self.set_message,
+                              self.set_message)
+        self._grid.create()
 
     def set_message(self, message):
         self._message_text.set(message)
