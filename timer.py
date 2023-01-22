@@ -34,6 +34,7 @@ class Timer:
         minute, second = int(time_str[0:2]), int(time_str[3:])
         if second == 0:
             if minute == 0:
+                self._timeout_handler()
                 return
             minute -= 1
             second = 59

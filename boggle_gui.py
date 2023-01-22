@@ -1,5 +1,6 @@
 import tkinter as tki
 
+from end_screen_gui import EndScreenGui
 from game_screen_gui import GameScreenGui
 from start_screen_gui import StartScreenGui
 
@@ -10,13 +11,15 @@ BOTTOM_BAR_HEIGHT = 60
 
 
 class BoggleGui:
-    def __init__(self, board, handle_start_screen_press, handle_add_coordinate):
+    def __init__(self, board, handle_start_screen_press, handle_add_coordinate, handle_time_out):
         self._create_root()
-        self._start_screen = StartScreenGui(self._root, handle_start_screen_press)
+        self.start_screen = StartScreenGui(self._root, handle_start_screen_press)
         self._handle_start_screen_press = handle_start_screen_press
         self._handle_add_coordinate = handle_add_coordinate
         self._board = board
-        self.game_screen = GameScreenGui(board, self._root, handle_add_coordinate)
+        self._handle_time_out = handle_time_out
+        self.game_screen = GameScreenGui(board, self._root, handle_add_coordinate, handle_time_out)
+        self.end_screen = EndScreenGui("")
 
     def _create_root(self):
         root = tki.Tk()
@@ -32,10 +35,10 @@ class BoggleGui:
         self.game_screen.set_message(message)
 
     def display_start_screen(self):
-        self._start_screen.create()
+        self.start_screen.create()
 
     def hide_start_screen(self):
-        self._start_screen.destroy()
+        self.start_screen.destroy()
 
     def display_game_screen(self):
         self.game_screen.create()
@@ -43,8 +46,8 @@ class BoggleGui:
     def hide_game_screen(self):
         self.game_screen.destroy()
 
-    def display_end_screen(self, handle_end_screen_press):
-        pass
+    def display_end_screen(self):
+        self.end_screen.create()
 
     # def reset_tiles(self):
     #     self.game_screen.reset_tiles()

@@ -1,16 +1,17 @@
 import tkinter as tki
 import tkinter.font as tkif
 
-from color_pallete import BG_COLOR, SECONDARY_TEXT_COLOR, HIGHLIGHT_COLOR, USED_WORDS_BORDER_COLOR
+from color_pallete import BG_COLOR, SECONDARY_TEXT_COLOR, USED_WORDS_BORDER_COLOR
 from tile_grid import TileGrid
 from timer import Timer
 
 BOARD_SIZE = 400
-GAME_TIME = "03:00"
+GAME_TIME = "00:03"
 
 
 class GameScreenGui:
-    def __init__(self, board, master, handle_add_coordinate):
+    def __init__(self, board, master, handle_add_coordinate, handle_timeout):
+        self._container = None
         self._score_frame = None
         self._buttons_frame = None
         self._words_frame = None
@@ -24,6 +25,7 @@ class GameScreenGui:
         self._grid = None
         self._board = board
         self._handle_add_coordinate = handle_add_coordinate
+        self._handle_timeout = handle_timeout
         self._message_text = tki.StringVar()
         self._used_words_text = tki.StringVar()
 
@@ -51,6 +53,7 @@ class GameScreenGui:
         buttons_frame = tki.Frame(container, bg=BG_COLOR)
         buttons_frame.grid(row=3, column=0, columnspan=2, sticky=tki.NSEW)
 
+        self._container = container
         self._timer_frame = timer_frame
         self._tiles_frame = tiles_frame
         self._message_frame = message_frame
@@ -64,18 +67,12 @@ class GameScreenGui:
         self._create_score_label()
         self._create_used_words_label()
 
-    def handle_time_out(self):
-        pass
-
     def _create_timer(self):
-        self._timer = Timer(self._timer_frame, GAME_TIME, self.handle_time_out)
+        self._timer = Timer(self._timer_frame, GAME_TIME, self._handle_timeout)
         self._timer.create()
 
     def destroy(self):
-        frames = [self._top_frame, self._center_frame, self._bottom_frame]
-        for frame in frames:
-            if frame:
-                frame.destroy()
+        self._container.destroy()
 
     def _create_grid(self):
         self._grid = TileGrid(self._tiles_frame, self._board, BOARD_SIZE, self._handle_add_coordinate, self.set_message,

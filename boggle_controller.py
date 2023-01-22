@@ -13,7 +13,7 @@ class BoggleController:
                                   message_setter=self.message_setter,
                                   score_and_words_setter=None)
         self._gui = BoggleGui(board=self._board, handle_start_screen_press=self.on_start_screen_press,
-                              handle_add_coordinate=self._model.add_coordinate)
+                              handle_add_coordinate=self._model.add_coordinate, handle_time_out=self.game_over)
         self._model._score_and_words_setter = self._gui.game_screen.set_score_and_words
 
     def run(self):
@@ -37,3 +37,7 @@ class BoggleController:
 
     def reset_tiles(self):
         self._gui.game_screen.reset_tiles()
+
+    def game_over(self):
+        self._gui.hide_game_screen()
+        self._gui.display_end_screen()
