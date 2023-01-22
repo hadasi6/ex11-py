@@ -1,4 +1,7 @@
 import tkinter as tki
+import tkinter.font as tkif
+
+from color_pallete import SECONDARY_TEXT_COLOR, BG_COLOR
 
 
 class Timer:
@@ -11,7 +14,9 @@ class Timer:
 
     def create(self):
         lable_text_change = tki.StringVar()
-        timer_label = tki.Label(self._master, textvariable=lable_text_change)
+        timer_label = tki.Label(self._master, textvariable=lable_text_change,
+                                bg=BG_COLOR, fg=SECONDARY_TEXT_COLOR,
+                                font=tkif.Font(size=12, weight="bold"))
         lable_text_change.set(self._game_time)
         timer_label.pack()
         self._timer_label = timer_label

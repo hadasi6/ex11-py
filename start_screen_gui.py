@@ -11,7 +11,7 @@ class StartScreenGui:
         frame = tki.Frame(self._master, bg='red')
         frame.pack(fill=tki.BOTH, expand=True)
         button = tki.Button(frame, command=self._handle_start, text="Kill Me", bg='yellow')
-        button.pack()
+        button.place(relx=0.5, rely=0.5, anchor=tki.CENTER)
         self._frame = frame
         # bottom_frame = tki.Frame(self._master, bg="lightgray", height=400)
         # bottom_frame.pack(fill=tki.X, side=tki.BOTTOM)

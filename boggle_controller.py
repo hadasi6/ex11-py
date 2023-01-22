@@ -14,7 +14,7 @@ class BoggleController:
                                   score_and_words_setter=None)
         self._gui = BoggleGui(board=self._board, handle_start_screen_press=self.on_start_screen_press,
                               handle_add_coordinate=self._model.add_coordinate)
-        self._model._score_and_words_setter = self._gui.game_screen.set_score_and_word
+        self._model._score_and_words_setter = self._gui.game_screen.set_score_and_words
 
     def run(self):
         self._gui.display_start_screen()

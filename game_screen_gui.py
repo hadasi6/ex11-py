@@ -1,9 +1,12 @@
 import tkinter as tki
+import tkinter.font as tkif
+
+from color_pallete import BG_COLOR, SECONDARY_TEXT_COLOR, HIGHLIGHT_COLOR, USED_WORDS_BORDER_COLOR
 from tile_grid import TileGrid
 from timer import Timer
 
 BOARD_SIZE = 400
-BG_COLOR = "#cbbff9"
+GAME_TIME = "03:00"
 
 
 class GameScreenGui:
@@ -36,13 +39,14 @@ class GameScreenGui:
 
         message_frame = tki.Frame(container, bg=BG_COLOR)
         message_frame.grid(row=0, column=0, columnspan=2, sticky=tki.NSEW)
-        timer_frame = tki.Frame(container)
+        timer_frame = tki.Frame(container, bg=BG_COLOR)
         timer_frame.grid(row=1, column=0, sticky=tki.NSEW)
         score_frame = tki.Frame(container, bg=BG_COLOR)
         score_frame.grid(row=1, column=1, sticky=tki.NSEW)
         tiles_frame = tki.Frame(container)
         tiles_frame.grid(row=2, column=0, sticky=tki.NSEW)
-        words_frame = tki.Frame(container, bg=BG_COLOR)
+        words_frame = tki.Frame(container, bg=BG_COLOR, highlightthickness=5,
+                                highlightbackground=USED_WORDS_BORDER_COLOR, border=3)
         words_frame.grid(row=2, column=1, sticky=tki.NSEW)
         buttons_frame = tki.Frame(container, bg=BG_COLOR)
         buttons_frame.grid(row=3, column=0, columnspan=2, sticky=tki.NSEW)
@@ -64,7 +68,7 @@ class GameScreenGui:
         pass
 
     def _create_timer(self):
-        self._timer = Timer(self._timer_frame, "03:00", self.handle_time_out)
+        self._timer = Timer(self._timer_frame, GAME_TIME, self.handle_time_out)
         self._timer.create()
 
     def destroy(self):
@@ -82,20 +86,30 @@ class GameScreenGui:
         self._message_text.set(message)
 
     def _create_message_label(self):
-        label = tki.Label(self._message_frame, textvariable=self._message_text)
+        label = tki.Label(self._message_frame, textvariable=self._message_text,
+                          bg=BG_COLOR, fg=SECONDARY_TEXT_COLOR,
+                          font=tkif.Font(weight="bold", size=12))
         label.pack()
 
     def _create_used_words_label(self):
-        label = tki.Label(self._words_frame, textvariable=self._used_words_text)
+        title = tki.Label(self._words_frame, text="Found Words\n",
+                          bg=BG_COLOR, fg="black",
+                          font=tkif.Font(weight="bold", size=12))
+        title.pack(fill=tki.X)
+        label = tki.Label(self._words_frame, textvariable=self._used_words_text,
+                          bg=BG_COLOR, fg=SECONDARY_TEXT_COLOR)
         label.pack()
 
-    def set_score_and_word(self, score, words):
+    def set_score_and_words(self, score, words):
         self._score_text.set(str(score))
+        sorted_words = sorted(words)
         text = "\n".join(words)
         self._used_words_text.set(text)
 
     def _create_score_label(self):
-        label = tki.Label(self._score_frame, textvariable=self._score_text)
+        label = tki.Label(self._score_frame, textvariable=self._score_text,
+                          bg=BG_COLOR, fg=SECONDARY_TEXT_COLOR,
+                          font=tkif.Font(size=12))
         label.pack()
 
     def reset_tiles(self):

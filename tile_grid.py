@@ -1,6 +1,7 @@
 import tkinter as tki
+import tkinter.font as tkif
+from color_pallete import TILE_GRID_TEXT_COLOR, TILE_GRID_BUTTON_COLOR
 
-from ex11_utils import is_adjacent
 
 
 class TileGrid:
@@ -14,7 +15,7 @@ class TileGrid:
         self._message_setter = message_setter
 
     def create(self):
-        main_frame = tki.Frame(master=self._master, bg='lightgreen')
+        main_frame = tki.Frame(master=self._master)
         main_frame.pack(fill=tki.BOTH, expand=True)
         self._main_frame = main_frame
         for i in range(4):
@@ -22,7 +23,10 @@ class TileGrid:
             for j in range(4):
                 main_frame.columnconfigure(j, weight=1)
                 handler = self.create_tile_press_handler((i, j))
-                button = tki.Button(self._main_frame, text=self._board[i][j])
+                button = tki.Button(self._main_frame, text=self._board[i][j],
+                                    bg=TILE_GRID_BUTTON_COLOR,
+                                    fg=TILE_GRID_TEXT_COLOR,
+                                    font=tkif.Font(size=24))
                 button.grid(row=i, column=j, sticky=tki.NSEW)
                 button.bind("<Button-1>", handler)
                 self._buttons[(i, j)] = button
