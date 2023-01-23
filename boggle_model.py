@@ -1,4 +1,19 @@
+import random
+
 from ex11_utils import is_adjacent
+
+
+def randomize_feedback():
+    return random.choice([
+        "Good job!",
+        "Very good",
+        "You made me proud",
+        "Dope!",
+        "Amazing",
+        "Wonderful",
+        "Excellent",
+        "Very cool"
+    ])
 
 
 class BoggleModel:
@@ -27,7 +42,8 @@ class BoggleModel:
                 self._message_setter(self._temp_word)
         # Finished writting word
         else:
-            self._message_setter("")
+            feedback = randomize_feedback()
+            self._message_setter(feedback)
             self._reset_word()
 
             if self.is_valid_word(self._path):
@@ -37,7 +53,6 @@ class BoggleModel:
                 # TODO: handle finished word
             self._path = []
             self._temp_word = ""
-
 
     def is_valid_word(self, path):  # update score
         # word = ''
